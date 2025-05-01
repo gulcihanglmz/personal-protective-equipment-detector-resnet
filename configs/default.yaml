@@ -1,0 +1,14 @@
+DATA_DIR: "C:\\SH17-dataset\\root"
+TRAIN_JSON: "train.json"
+VAL_JSON:   "val.json"
+IMG_DIR:    "images"
+
+NUM_CLASSES: 18      # 17 class + background
+BATCH_SIZE: 2
+NUM_EPOCHS: 100
+LR:         0.005
+MOMENTUM:   0.9
+WEIGHT_DECAY: 0.0005
+STEP_LR_SIZE: 3
+STEP_LR_GAMMA: 0.1
+DEVICE: "cuda"
