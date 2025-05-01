@@ -27,7 +27,7 @@ aifs/
 └── README.md                  # This file
 ```
 
-# YOLO2COCO Conversion and Visualization Process (MMYOLO)
+## YOLO2COCO Conversion and Visualization Process (MMYOLO)
 
 This document explains the steps to convert a YOLO dataset to COCO format and visualize it using the `browse_coco_json.py` tool.
 
@@ -89,7 +89,7 @@ python browse_coco_json.py \
   --category-names person hand
 ```
 
-### 🧾 Parameter Descriptions:
+### Parameter Descriptions:
 
 | Parameter            | Description                                                |
 |----------------------|------------------------------------------------------------|
