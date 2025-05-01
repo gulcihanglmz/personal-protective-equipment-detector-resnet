@@ -1,4 +1,6 @@
 import os, sys
+import tqdm
+
 proj_root = os.path.abspath(os.path.join(__file__, "..", ".."))
 if proj_root not in sys.path:
     sys.path.insert(0, proj_root)
@@ -48,10 +50,9 @@ def main():
                                                    step_size=cfg["STEP_LR_SIZE"],
                                                    gamma=cfg["STEP_LR_GAMMA"])
 
-
-    for epoch in range(cfg["NUM_EPOCHS"]):
+    for epoch in trange(cfg["NUM_EPOCHS"], desc="Epochs"):
         loss = train_one_epoch(model, train_loader, optimizer, device)
-        print(f"[Epoch {epoch + 1}/{cfg['NUM_EPOCHS']}] Train loss: {loss:.4f}")
+        tqdm.write(f"[Epoch {epoch + 1}/{cfg['NUM_EPOCHS']}] Train loss: {loss:.4f}")
 
         lr_scheduler.step()
         writer.add_scalar("LR", optimizer.param_groups[0]["lr"], epoch)

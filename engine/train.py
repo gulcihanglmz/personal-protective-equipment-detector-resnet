@@ -1,4 +1,5 @@
 import torch
+from tqdm import tqdm
 
 def train_one_epoch(model, data_loader, optimizer, device):
     model.train()
@@ -6,7 +7,7 @@ def train_one_epoch(model, data_loader, optimizer, device):
     scaler  = torch.cuda.amp.GradScaler() if use_amp else None
     total_loss = 0
 
-    for images, targets in data_loader:
+    for images, targets in tqdm(data_loader, desc="Batches", leave=False):
         images  = [img.to(device) for img in images]
         targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
