@@ -8,7 +8,7 @@ def train_one_epoch(model, data_loader, optimizer, device):
     total_loss = 0
 
     for images, targets in tqdm(data_loader, desc="Batches", leave=False):
-        images  = [img.to(device) for img in images]
+        images = [img.to(device) for img in images]
         targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
         optimizer.zero_grad()
@@ -17,12 +17,16 @@ def train_one_epoch(model, data_loader, optimizer, device):
                 loss_dict = model(images, targets)
                 loss = sum(loss for loss in loss_dict.values())
             scaler.scale(loss).backward()
+            # clip gradients of the *unscaled* gradients
+            scaler.unscale_(optimizer)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=10.0)
             scaler.step(optimizer)
             scaler.update()
         else:
             loss_dict = model(images, targets)
             loss = sum(loss for loss in loss_dict.values())
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=10.0)
             optimizer.step()
 
         total_loss += loss.item()
