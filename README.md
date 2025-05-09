@@ -66,13 +66,11 @@ Process finished! Please check at C:\SH17-dataset\root\annotations .
 Number of images found: 8099, converted: 8099, and skipped: 0. Total annotation count: 75994.
 You can use tools/analysis_tools/browse_coco_json.py to visualize!
 ```
-
 ---
 
 ## 2. Step: Visualizing the COCO JSON File
 
 Run the visualization script on your newly created COCO JSON:
-
 ### Directory:
 ```
 C:\mmyolo\tools\analysis_tools
@@ -88,6 +86,7 @@ python browse_coco_json.py \
   --disp-all \
   --category-names person hand
 ```
+![1](https://github.com/user-attachments/assets/da7f607e-d8fa-41c5-94f7-d1ca070ff5ad)
 
 ### Parameter Descriptions:
 
