@@ -5,7 +5,7 @@ IMG_DIR:       "images"
 
 NUM_CLASSES:   18      # 17 class + background
 BATCH_SIZE:    2
-NUM_EPOCHS:    40
+NUM_EPOCHS:    50
 LR:            0.0004
 MOMENTUM:      0.9
 WEIGHT_DECAY:  0.0001
@@ -13,4 +13,4 @@ STEP_LR_SIZE:  10
 STEP_LR_GAMMA: 0.1
 DEVICE:        "cuda"
 
-EVAL_INTERVAL: 1
+EVAL_INTERVAL: 5
