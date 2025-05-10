@@ -2,8 +2,9 @@
 __pycache__/
 *.py[cod]
 
-# TensorBoard logları
+# TensorBoard logs
 runs/
+*.tfevents.*
 
 # IDE klasörleri
 .idea/
