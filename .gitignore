@@ -1,0 +1,14 @@
+# PyCache dosyaları
+__pycache__/
+*.py[cod]
+
+# TensorBoard logları
+runs/
+
+# IDE klasörleri
+.idea/
+.vscode/
+
+# Sanal ortam
+venv/
+.env/
