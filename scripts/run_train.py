@@ -1,7 +1,8 @@
-import warnings
-warnings.filterwarnings("ignore", category=UserWarning)
-
 import os, sys
+proj_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if proj_root not in sys.path:
+    sys.path.insert(0, proj_root)
+
 from tqdm import trange, tqdm
 import yaml
 import torch
@@ -13,26 +14,21 @@ from models.faster_rcnn import get_model
 from engine.train import train_one_epoch
 from engine.evaluate import evaluate
 
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+
 def collate_fn(batch):
     return tuple(zip(*batch))
 
-# Proje kökünü path’e ekleme
-proj_root = os.path.abspath(os.path.join(__file__, "..", ".."))
-if proj_root not in sys.path:
-    sys.path.insert(0, proj_root)
-
 def main():
-    # Config yükle
     cfg = yaml.safe_load(open(os.path.join(proj_root, "configs", "default.yaml")))
 
     # TensorBoard
     writer = SummaryWriter(os.path.join("runs", os.path.basename(__file__).split(".")[0]))
 
-    # Erken durdurma ve validate aralığı
     best_map, patience, no_improve = 0.0, 10, 0
     eval_interval = cfg.get("EVAL_INTERVAL", 5)
 
-    # Dataset & DataLoader (cleaned.json kullanıldığını varsayıyoruz)
     train_ds = make_coco_dataset(cfg["DATA_DIR"], cfg["TRAIN_JSON"], train=True)
     val_ds   = make_coco_dataset(cfg["DATA_DIR"], cfg["VAL_JSON"],   train=False)
 
@@ -87,16 +83,13 @@ def main():
 
     torch.backends.cudnn.benchmark = True
 
-    # Eğitim döngüsü
     for epoch in trange(cfg["NUM_EPOCHS"], desc="Epochs"):
         loss = train_one_epoch(model, train_loader, optimizer, device)
         tqdm.write(f"[Epoch {epoch+1}/{cfg['NUM_EPOCHS']}] Train loss: {loss:.4f}")
 
-        # Epoch sonunda LR scheduler
         lr_scheduler.step()
         writer.add_scalar("LR", optimizer.param_groups[0]["lr"], epoch)
 
-        # Sadece her eval_interval epoch'ta validate et
         if (epoch + 1) % eval_interval == 0:
             stats = evaluate(
                 model,
@@ -119,7 +112,6 @@ def main():
                 tqdm.write(f"Stopping early: no improvement for {patience} epochs.")
                 break
 
-        # Her epoch sonunda son modeli kaydet ve cache temizle
         torch.save(model.state_dict(), "last_model.pth")
         torch.cuda.empty_cache()
 
